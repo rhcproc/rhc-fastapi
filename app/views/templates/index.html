@@ -1,0 +1,44 @@
+
+{% extends 'base_auth.html' %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+
+<div id="index">
+<p>Hello, {{ description }} </p>
+</div>
+
+<script>
+  new Vue({
+  el: '#index',
+  delimiters: ["[[", "]]"],
+  data: {
+    description: '',
+  },
+  created: function () {
+    this.fetchUser();
+  },
+  methods: {
+    fetchUser: function() {
+      axios.get('/api/auth/me',{
+        headers: {
+          Authorization: "Bearer " + window.$cookies.get("access_token")
+        }
+      }).then(function(response) {
+        console.log('r2',response);
+        if (response.status != 200) {
+          window.location.href = '/login';
+        }
+      }).catch(function(response) {
+        console.log('r3',response);
+        if (response.status != 200) {
+          window.location.href = '/login';
+        }
+      });
+    },
+  }
+  });
+</script>
+
+{% endblock %}

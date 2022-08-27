@@ -1,0 +1,84 @@
+ 
+{% extends 'base_auth.html' %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+
+<h2 class="ui teal image header">
+        
+ <a href='/'>
+  <div class="content" style="color:#1b1c1d;">
+    <!-- <img src='../static/img01_logo.png' 
+    style="width: 5em; margin:auto;" /> -->
+    Log-in to your account
+  </div>
+</a>
+</h2>
+<div id="login">
+<div class="ui large form" >
+  <div class="ui stacked segment">
+    <div class="field">
+      <div class="ui left icon input">
+        <i class="user icon"></i>
+        <input type="text" name="username" v-model="username" placeholder="E-mail address">
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui left icon input">
+        <i class="lock icon"></i>
+        <input type="password" name="password" v-model="password" @keyup="keyPress" placeholder="Password">
+      </div>
+    </div>
+    <!-- <div class="ui fluid large black submit button">Login</div> -->
+    <div class="ui fluid large teal button" @click="login">Login</div>
+  </div>
+
+  <div class="ui error message"></div>
+
+</div>
+
+<div class="ui message">
+  New to us? <a href="/signup">Sign Up</a>
+</div>
+
+</div>
+
+<script>
+  //Vue.http.options.emulateJSON = true; // send as 
+  new Vue({
+    el: '#login',
+    delimiters: ["[[", "]]"],
+    data: {
+      username: '',
+      password: '',
+    },
+    created: function () {
+      // this.fetchUser();
+    },
+    methods: {
+      keyPress : function(e){
+        var text = e.target.value;
+        if(e.which == 13){
+          console.log(text);
+          this.login();
+        }
+      },
+      login: function() {
+        axios.post('/api/auth/signin',{
+          username: this.username,
+          password: this.password,
+        })
+        .then(function(response) {
+          console.log(response.data);
+          if (response.data.result.message == 'Login Success') {
+            window.$cookies.set("access_token",response.data.result.access_token)
+            window.location.href = '/';
+            }
+        });
+      }
+    },
+  });
+</script>
+
+{% endblock %}
