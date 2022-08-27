@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: RhcProc API on Lambda
+
+Resources:
+  Function: # SAM Local에서 호출하는 함수
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: "rhcproc-api"  # Lambda Function Name
+      CodeUri: app  # Lambda Function이 담겨 있는 위치
+      Handler: main.handler # Lambda Handler 함수의 위치
+      Runtime: python3.9
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+
+  Api:
+    Type: AWS::Serverless::HttpApi
+
+Outputs:
+  ApiUrl:
+    Description: URL of your API
+    Value:
+      Fn::Sub: 'https://${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}/'
+
