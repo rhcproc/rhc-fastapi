@@ -3,6 +3,7 @@ from views import Request, APIRouter, templating, settings
 import json
 from fastapi import Form
 from handlers.response import OK, CREATED
+from settings import settings
 
 api = APIRouter()
 
@@ -12,7 +13,7 @@ async def root(request: Request):
         'index.html',
         context={
             'request': request,
-            'description': 'hi'
+            'description': settings.description
         }
     )
 

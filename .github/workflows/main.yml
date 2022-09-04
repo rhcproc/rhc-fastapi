@@ -26,7 +26,7 @@ jobs:
       - name: Download Production Env file from S3
         id: download-env-from-s3
         run: |
-          aws s3 cp ${{ secrets.S3_ENV_PATH }} env.ini
+          aws s3 cp ${{ secrets.S3_ENV_PATH }} settings.txt
           
       - uses: actions/setup-python@v3
       - uses: aws-actions/setup-sam@v2
