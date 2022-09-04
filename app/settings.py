@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     name: str = Field(None, env='NAME')
 
     class Config:
-        env_file = "./settings.ini"
+        env_file = "./settings.txt"
         env_file_encoding = "utf-8"
         
     def init_app(self, app: FastAPI):

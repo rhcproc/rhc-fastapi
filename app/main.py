@@ -7,8 +7,12 @@ from settings import settings
 from mangum import Mangum
 from fastapi.openapi.utils import get_openapi
 from urls import get_app_for_applied_routes
+from fastapi.staticfiles import StaticFiles
+
 
 app: FastAPI = create_app(settings)
+
+app.mount("/static", StaticFiles(directory="views/static"), name="static")
 
 def custom_openapi():
     if app.openapi_schema:
